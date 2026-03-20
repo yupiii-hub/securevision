@@ -1,16 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nataniel Pendong – Teknisi Jaringan CCTV</title>
+  <title>Nataniel Pendong – Teknisi Jaringan & CCTV</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.383.0/umd/lucide.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
     :root {
       --bg: #0b0d10;
       --surface: #111318;
@@ -22,9 +21,9 @@
       --muted: #6b7280;
       --green: #22c55e;
     }
- 
+
     html { scroll-behavior: smooth; }
- 
+
     body {
       background: var(--bg);
       color: var(--text);
@@ -33,7 +32,7 @@
       line-height: 1.6;
       overflow-x: hidden;
     }
- 
+
     /* ── NAV ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -54,7 +53,7 @@
       transition: color .2s;
     }
     .nav-links a:hover { color: var(--accent); }
- 
+
     /* ── HERO ── */
     #hero {
       min-height: 100vh;
@@ -96,7 +95,7 @@
       from { opacity:0; transform:translateY(20px); }
       to   { opacity:1; transform:translateY(0); }
     }
- 
+
     h1 {
       font-family: 'Syne', sans-serif;
       font-size: clamp(2.4rem, 6vw, 4.2rem);
@@ -129,7 +128,7 @@
       transition: border-color .2s, transform .15s;
     }
     .btn-outline:hover { border-color: var(--accent); transform: translateY(-2px); }
- 
+
     .hero-stats {
       display: flex; gap: 2.5rem; margin-top: 3.5rem;
       animation: fadeUp .7s .45s ease both;
@@ -139,7 +138,7 @@
       color: var(--accent);
     }
     .stat-label { font-size: .8rem; color: var(--muted); margin-top: .1rem; }
- 
+
     /* ── SECTIONS ── */
     section { padding: 5rem 6vw; }
     .section-label {
@@ -151,7 +150,7 @@
       font-size: clamp(1.7rem, 3.5vw, 2.5rem); margin-bottom: 1rem;
     }
     .section-desc { color: var(--muted); max-width: 520px; margin-bottom: 3rem; }
- 
+
     /* ── SERVICES ── */
     #services { background: var(--surface); }
     .services-grid {
@@ -183,7 +182,7 @@
       font-weight: 700; margin-bottom: .5rem;
     }
     .service-card p { color: var(--muted); font-size: .88rem; line-height: 1.6; }
- 
+
     /* ── ABOUT ── */
     #about .about-flex {
       display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
@@ -191,11 +190,10 @@
     .about-img-wrap {
       position: relative; border-radius: 14px; overflow: hidden;
       border: 1px solid var(--border);
-      box-shadow: 0 0 0 4px rgba(0,212,255,.06), 0 24px 60px rgba(0,0,0,.5);
     }
     .about-img-wrap img {
-      width: 100%; height: 420px; object-fit: cover; object-position: center top;
-      display: block;
+      width: 100%; height: 340px; object-fit: cover; display: block;
+      filter: grayscale(20%);
     }
     .about-img-placeholder {
       width: 100%; height: 340px;
@@ -212,52 +210,146 @@
       color: var(--accent); border-radius: 6px;
       padding: .25rem .7rem; font-size: .78rem; font-weight: 500;
     }
- 
-    /* ── GALLERY ── */
+
+    /* ── GALLERY SLIDER ── */
     #gallery { background: var(--surface); }
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 1rem;
+    .gallery-slider-wrap {
+      position: relative;
     }
+    .gallery-slider {
+      display: flex; gap: 1rem;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+      padding-bottom: .5rem; cursor: grab;
+    }
+    .gallery-slider:active { cursor: grabbing; }
+    .gallery-slider::-webkit-scrollbar { height: 4px; }
+    .gallery-slider::-webkit-scrollbar-track { background: var(--border); border-radius: 4px; }
+    .gallery-slider::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 4px; }
     .gallery-item {
+      flex: 0 0 300px; height: 220px;
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; overflow: hidden;
-      aspect-ratio: 4/3;
+      border-radius: 12px; overflow: hidden;
+      scroll-snap-align: start;
       position: relative; cursor: pointer;
-      transition: border-color .2s, transform .2s;
+      transition: border-color .25s, transform .25s, box-shadow .25s;
     }
-    .gallery-item:hover { border-color: var(--accent2); transform: scale(1.02); }
-    .gallery-item img { width:100%; height:100%; object-fit:cover; display:block; }
+    .gallery-item:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,212,255,.12);
+    }
+    .gallery-item img { width:100%; height:100%; object-fit:cover; display:block; transition: transform .4s; }
+    .gallery-item:hover img { transform: scale(1.05); }
+    .gallery-item-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 55%);
+      opacity: 0; transition: opacity .25s;
+      display: flex; align-items: flex-end; padding: 1rem;
+    }
+    .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+    .gallery-item-overlay span {
+      color: #fff; font-size: .82rem; font-weight: 500;
+      display: flex; align-items: center; gap: .4rem;
+    }
+    .gallery-item-overlay svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2; }
     .gallery-placeholder {
       width:100%; height:100%;
       display:flex; flex-direction:column; align-items:center; justify-content:center;
-      color: var(--muted); gap:.4rem; font-size:.82rem;
+      color: var(--muted); gap:.5rem; font-size:.82rem;
     }
-    .gallery-placeholder .up-icon { font-size:1.8rem; }
-    .add-photo-btn {
-      background: var(--card); border: 2px dashed var(--border);
-      border-radius: 10px; overflow:hidden; aspect-ratio:4/3;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      color: var(--muted); gap:.5rem; font-size:.85rem;
-      cursor:pointer; transition: border-color .2s, color .2s;
+    .gallery-placeholder svg { width: 28px; height: 28px; stroke: var(--muted); stroke-width: 1.5; fill: none; }
+    /* Slider nav buttons */
+    .slider-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 42px; height: 42px; border-radius: 50%;
+      background: rgba(11,13,16,.85); backdrop-filter: blur(8px);
+      border: 1px solid var(--border); color: var(--text);
+      cursor: pointer; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color .2s, background .2s, transform .2s;
     }
-    .add-photo-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .add-photo-btn .plus { font-size:2rem; }
-    #photo-upload { display:none; }
- 
-    /* Gallery lightbox */
+    .slider-btn:hover { border-color: var(--accent); background: rgba(0,212,255,.12); transform: translateY(-50%) scale(1.08); }
+    .slider-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.2; }
+    .slider-btn.prev { left: -20px; }
+    .slider-btn.next { right: -20px; }
+    /* Slider dots */
+    .slider-dots {
+      display: flex; justify-content: center; gap: .5rem; margin-top: 1.2rem;
+    }
+    .slider-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--border); border: none; cursor: pointer;
+      transition: background .2s, transform .2s; padding: 0;
+    }
+    .slider-dot.active { background: var(--accent); transform: scale(1.4); }
+
+    /* ── LIGHTBOX ── */
     #lightbox {
-      display:none; position:fixed; inset:0; z-index:200;
-      background:rgba(0,0,0,.9); align-items:center; justify-content:center;
+      display: none; position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,.96);
+      align-items: center; justify-content: center;
+      flex-direction: column;
     }
-    #lightbox.active { display:flex; }
-    #lightbox img { max-width:90vw; max-height:90vh; border-radius:8px; }
-    #lightbox-close {
-      position:absolute; top:1.5rem; right:2rem;
-      font-size:2rem; color:#fff; cursor:pointer; background:none; border:none;
+    #lightbox.active { display: flex; }
+    #lightbox-img-wrap {
+      position: relative; max-width: 92vw; max-height: 82vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; border-radius: 10px;
+      cursor: zoom-in;
     }
- 
+    #lightbox-img-wrap.zoomed { cursor: zoom-out; overflow: visible; }
+    #lightbox-img {
+      max-width: 92vw; max-height: 82vh;
+      border-radius: 10px; display: block;
+      transition: transform .3s ease;
+      transform-origin: center center;
+      user-select: none; -webkit-user-drag: none;
+    }
+    #lightbox-img-wrap.zoomed #lightbox-img { transform: scale(2); }
+    /* Lightbox toolbar */
+    #lightbox-toolbar {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      display: flex; gap: .6rem;
+    }
+    .lb-btn {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: rgba(255,255,255,.1); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.15);
+      color: #fff; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .lb-btn:hover { background: rgba(0,212,255,.25); border-color: var(--accent); }
+    .lb-btn svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2; }
+    /* Lightbox nav arrows */
+    .lb-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,.08); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.15);
+      color: #fff; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, transform .2s;
+      z-index: 10;
+    }
+    .lb-arrow:hover { background: rgba(0,212,255,.25); transform: translateY(-50%) scale(1.1); }
+    .lb-arrow svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2.2; }
+    #lb-prev { left: 1.5rem; }
+    #lb-next { right: 1.5rem; }
+    /* Lightbox counter */
+    #lb-counter {
+      margin-top: .9rem;
+      font-size: .82rem; color: rgba(255,255,255,.5);
+      font-family: 'DM Sans', sans-serif; letter-spacing: .06em;
+    }
+    /* Lightbox caption */
+    #lb-caption {
+      margin-top: .4rem;
+      font-size: .9rem; color: rgba(255,255,255,.8);
+      font-family: 'Syne', sans-serif; font-weight: 600;
+    }
+
     /* ── CONTACT ── */
     #contact { text-align: center; }
     #contact h2 { margin-bottom: .8rem; }
@@ -277,7 +369,7 @@
     .contact-card .c-icon { font-size: 1.8rem; }
     .contact-card .c-label { font-size: .78rem; color: var(--muted); }
     .contact-card .c-val { font-weight: 600; font-size: .92rem; }
- 
+
     /* ── FOOTER ── */
     footer {
       padding: 2rem 6vw; border-top: 1px solid var(--border);
@@ -286,7 +378,7 @@
       color: var(--muted); font-size: .82rem;
     }
     footer a { color: var(--accent); text-decoration: none; }
- 
+
     /* ── EXPERIENCE ── */
     #experience { background: var(--bg); }
     .exp-list { display: flex; flex-direction: column; gap: 1.5rem; max-width: 820px; }
@@ -355,7 +447,7 @@
       width: 6px; height: 6px; border-radius: 50%;
       background: var(--green); box-shadow: 0 0 5px var(--green);
     }
- 
+
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       #about .about-flex { grid-template-columns: 1fr; }
@@ -365,10 +457,10 @@
   </style>
 </head>
 <body>
- 
+
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Secure Visions</div>
+  <div class="nav-logo">⟨ Secure Visions /⟩</div>
   <ul class="nav-links">
     <li><a href="#services">Layanan</a></li>
     <li><a href="#about">Tentang</a></li>
@@ -377,7 +469,7 @@
     <li><a href="#contact">Kontak</a></li>
   </ul>
 </nav>
- 
+
 <!-- HERO -->
 <section id="hero">
   <div class="hero-grid-bg"></div>
@@ -412,7 +504,7 @@
     </div>
   </div>
 </section>
- 
+
 <!-- SERVICES -->
 <section id="services">
   <div class="section-label">Apa yang saya kerjakan</div>
@@ -451,12 +543,23 @@
     </div>
   </div>
 </section>
- 
+
 <!-- ABOUT -->
 <section id="about">
   <div class="about-flex">
     <div class="about-img-wrap" id="about-img-container">
-      <img src="pp.jpeg" alt="Foto Profil Nataniel Pendong">
+      <!-- Ganti src dengan foto Anda, atau biarkan placeholder -->
+      <img src="pp.jpeg" alt="Foto Profil">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        <span>Ganti dengan foto Anda</span>
+        <small style="font-size:.75rem;color:#4b5563;">Edit file HTML — tag &lt;img&gt; di sini</small>
+      </div>
+      <!--
+        Untuk menambahkan foto Anda, hapus div placeholder di atas
+        dan uncomment baris di bawah, ganti path foto:
+
+        <img src="foto-saya.jpg" alt="Foto Profil">
+      -->
     </div>
     <div class="about-text">
       <div class="section-label">Tentang Saya</div>
@@ -481,92 +584,118 @@
     </div>
   </div>
 </section>
- 
+
 <!-- GALLERY / PORTFOLIO -->
 <section id="gallery">
   <div class="section-label">Hasil Kerja Saya</div>
   <h2>Portofolio</h2>
   <p class="section-desc">Dokumentasi proyek nyata yang telah saya kerjakan. Klik foto untuk memperbesar.</p>
- 
-  <div class="gallery-grid" id="gallery-grid">
-     <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan1.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan2.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan3.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
-        </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan4.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>    
+
+  <div class="gallery-slider-wrap">
+    <!-- Tombol Prev -->
+    <button class="slider-btn prev" id="slider-prev" aria-label="Sebelumnya">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+
+    <div class="gallery-slider" id="gallery-slider">
+      <!-- ══ GANTI placeholder berikut dengan foto Anda ══
+           Contoh: <div class="gallery-item" data-caption="Instalasi CCTV Toko ABC">
+                     <img src="foto1.jpg" alt="...">
+                     <div class="gallery-item-overlay">...</div>
+                   </div>
+      -->
+      <div class="gallery-item" data-caption="Nama Proyek Anda">
+  <img src="pekerjaan1.jpeg" alt="Deskripsi">
+  <div class="gallery-item-overlay">
+    <span>🔍 Lihat Detail</span>
+  </div>
 </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan5.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>    
+      <div class="gallery-item" data-caption="Nama Proyek Anda">
+  <img src="pekerjaan2.jpeg" alt="Deskripsi">
+  <div class="gallery-item-overlay">
+    <span>🔍 Lihat Detail</span>
+  </div>
 </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan6.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>    
+          <div class="gallery-item" data-caption="Nama Proyek Anda">
+  <img src="pekerjaan3.jpeg" alt="Deskripsi">
+  <div class="gallery-item-overlay">
+    <span>🔍 Lihat Detail</span>
+  </div>
 </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan7.jpeg" alt="Instalasi CCTV Toko ABC">
+        <div class="gallery-item" data-caption="Nama Proyek Anda">
+  <img src="pekerjaan4.jpeg" alt="Deskripsi">
+  <div class="gallery-item-overlay">
+    <span>🔍 Lihat Detail</span>
+  </div>
+</div>
+          <div class="gallery-item" data-caption="Nama Proyek Anda">
+  <img src="pekerjaan5.jpeg" alt="Deskripsi">
+  <div class="gallery-item-overlay">
+    <span>🔍 Lihat Detail</span>
+  </div>
+</div>
+          <div class="gallery-item" data-caption="Nama Proyek Anda">
+  <img src="pekerjaan6.jpeg" alt="Deskripsi">
+  <div class="gallery-item-overlay">
+    <span>🔍 Lihat Detail</span>
+  </div>
+</div>
+          <div class="gallery-item" data-caption="Nama Proyek Anda">
+  <img src="pekerjaan7.jpeg" alt="Deskripsi">
+  <div class="gallery-item-overlay">
+    <span>🔍 Lihat Detail</span>
+  </div>
+</div>
+          <div class="gallery-item" data-caption="Nama Proyek Anda">
+  <img src="pekerjaan8.jpeg" alt="Deskripsi">
+  <div class="gallery-item-overlay">
+    <span>🔍 Lihat Detail</span>
+  </div>
+</div>
+          <div class="gallery-item" data-caption="Nama Proyek Anda">
+  <img src="pekerjaan9.jpeg" alt="Deskripsi">
+  <div class="gallery-item-overlay">
+    <span>🔍 Lihat Detail</span>
+  </div>
+</div>
+          <div class="gallery-item" data-caption="Nama Proyek Anda">
+  <img src="pekerjaan10.jpeg" alt="Deskripsi">
+  <div class="gallery-item-overlay">
+    <span>🔍 Lihat Detail</span>
+  </div>
+</div>
+          <div class="gallery-item" data-caption="Nama Proyek Anda">
+  <img src="pekerjaan11.jpeg" alt="Deskripsi">
+  <div class="gallery-item-overlay">
+    <span>🔍 Lihat Detail</span>
+  </div>
+</div>
+          <div class="gallery-item" data-caption="Nama Proyek Anda">
+  <img src="pekerjaan12.jpeg" alt="Deskripsi">
+  <div class="gallery-item-overlay">
+    <span>🔍 Lihat Detail</span>
+  </div>
+</div>
     </div>
-      </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan8.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
-      </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan9.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
-      </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan10.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
-      </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan11.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
-      </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan12.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
-      </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan13.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
-      </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan14.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
-      </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan15.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
-      </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan16.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
-      </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan17.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
-      </div>
-    <div class="gallery-item" onclick="openLightbox(this.querySelector('img').src)">
-        <img src="pekerjaan18.jpeg" alt="Instalasi CCTV Toko ABC">
-    </div>
- 
+
+    <!-- Tombol Next -->
+    <button class="slider-btn next" id="slider-next" aria-label="Berikutnya">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+
+  <!-- Dots navigasi -->
+  <div class="slider-dots" id="slider-dots"></div>
+</section>
+
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="section-label">Riwayat Karir</div>
   <h2>Pengalaman Kerja</h2>
   <p class="section-desc">Perjalanan profesional saya di berbagai perusahaan dan proyek nyata di lapangan.</p>
- 
+
   <div class="exp-list">
- 
+
     <!-- 1 — Pekerjaan saat ini -->
     <div class="exp-card">
       <div class="exp-logo">
@@ -593,7 +722,7 @@
         </div>
       </div>
     </div>
- 
+
     <!-- 2 -->
     <div class="exp-card">
       <div class="exp-logo">
@@ -620,7 +749,7 @@
         </div>
       </div>
     </div>
- 
+
     <!-- 3 -->
     <div class="exp-card">
       <div class="exp-logo">
@@ -647,7 +776,7 @@
         </div>
       </div>
     </div>
- 
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-label">Mulai Proyek Anda</div>
@@ -659,15 +788,15 @@
       <span class="c-label">WhatsApp</span>
       <span class="c-val">+62 895-0421-1494</span>
     </a>
-    <a class="contact-card" href="mailto:pendongnatan2@gmail.com">
+    <a class="contact-card" href="/cdn-cgi/l/pendongnatan2@gmail.com">
       <span class="c-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
       <span class="c-label">Email</span>
-      <span class="c-val">pendongnatan2@gmail.com</span>
+      <span class="c-val"><span class="__cf_email__" data-cfemail="33565e525a5f7358525e461d505c5e">[email&#160;protected]</span></span>
     </a>
-    <a class="contact-card" href="https://instagram.com/n.yupiii_" target="_blank">
+    <a class="contact-card" href="https://instagram.com/@n.yupiii_" target="_blank">
       <span class="c-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></span>
       <span class="c-label">Instagram</span>
-      <span class="c-val">@n.yupiii_</span>
+      <span class="c-val">@Secure Visions</span>
     </a>
     <a class="contact-card" href="https://github.com/username" target="_blank">
       <span class="c-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></span>
@@ -676,44 +805,195 @@
     </a>
   </div>
 </section>
- 
+
 <!-- FOOTER -->
 <footer>
   <span>© 2025 <strong style="color:var(--text)">Nataniel Yehuda Pendong</strong>. Dibuat dengan <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:14px;height:14px;display:inline-block;vertical-align:middle;fill:#00d4ff;stroke:none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
   <span>Manado, Sulawesi Utara · Teknisi Jaringan & CCTV</span>
 </footer>
- 
+
 <!-- LIGHTBOX -->
 <div id="lightbox">
-  <button id="lightbox-close"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-  <img id="lightbox-img" src="" alt="">
+  <!-- Toolbar kanan atas -->
+  <div id="lightbox-toolbar">
+    <button class="lb-btn" id="lb-zoom" title="Zoom">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/></svg>
+    </button>
+    <button class="lb-btn" id="lightbox-close" title="Tutup">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <!-- Tombol navigasi kiri/kanan -->
+  <button class="lb-arrow" id="lb-prev">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <!-- Foto -->
+  <div id="lightbox-img-wrap">
+    <img id="lightbox-img" src="" alt="">
+  </div>
+  <button class="lb-arrow" id="lb-next">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <!-- Counter & caption -->
+  <div id="lb-counter"></div>
+  <div id="lb-caption"></div>
 </div>
- 
+
 <script>
-  // ── Upload foto ke gallery (untuk preview lokal) ──
-  const input = document.getElementById('photo-upload');
-  const grid  = document.getElementById('gallery-grid');
- 
-  input.addEventListener('change', (e) => {
-    Array.from(e.target.files).forEach(file => {
-      const url = URL.createObjectURL(file);
-      const addBtn = grid.querySelector('.add-photo-btn').parentElement
-        ? grid.querySelector('label.add-photo-btn')
-        : null;
- 
-      const item = document.createElement('div');
-      item.className = 'gallery-item';
-      const img = document.createElement('img');
-      img.src = url;
-      item.appendChild(img);
-      item.addEventListener('click', () => openLightbox(url));
-      grid.insertBefore(item, addBtn || null);
+  // ══════════════════════════════════════════
+  //  GALLERY SLIDER
+  // ══════════════════════════════════════════
+  const slider     = document.getElementById('gallery-slider');
+  const btnPrev    = document.getElementById('slider-prev');
+  const btnNext    = document.getElementById('slider-next');
+  const dotsWrap   = document.getElementById('slider-dots');
+  const items      = Array.from(slider.querySelectorAll('.gallery-item'));
+  const ITEM_W     = () => items[0].offsetWidth + 16; // width + gap
+
+  // Build dots
+  items.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'slider-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => scrollTo(i));
+    dotsWrap.appendChild(d);
+  });
+  const dots = Array.from(dotsWrap.querySelectorAll('.slider-dot'));
+
+  function scrollTo(idx) {
+    slider.scrollTo({ left: idx * ITEM_W(), behavior: 'smooth' });
+  }
+  function updateDots() {
+    const idx = Math.round(slider.scrollLeft / ITEM_W());
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  btnPrev.addEventListener('click', () => {
+    slider.scrollBy({ left: -ITEM_W() * 2, behavior: 'smooth' });
+  });
+  btnNext.addEventListener('click', () => {
+    slider.scrollBy({ left: ITEM_W() * 2, behavior: 'smooth' });
+  });
+  slider.addEventListener('scroll', updateDots);
+
+  // Drag to scroll (desktop)
+  let isDragging = false, startX, startScroll;
+  slider.addEventListener('mousedown', e => {
+    isDragging = true; startX = e.pageX; startScroll = slider.scrollLeft;
+    slider.style.userSelect = 'none';
+  });
+  document.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    slider.scrollLeft = startScroll - (e.pageX - startX);
+  });
+  document.addEventListener('mouseup', () => {
+    isDragging = false; slider.style.userSelect = '';
+  });
+
+  // ══════════════════════════════════════════
+  //  LIGHTBOX  (zoom + prev/next + keyboard + swipe)
+  // ══════════════════════════════════════════
+  const lightbox   = document.getElementById('lightbox');
+  const lbImg      = document.getElementById('lightbox-img');
+  const lbImgWrap  = document.getElementById('lightbox-img-wrap');
+  const lbCounter  = document.getElementById('lb-counter');
+  const lbCaption  = document.getElementById('lb-caption');
+  const lbZoomBtn  = document.getElementById('lb-zoom');
+  let lbIndex = 0;
+  let isZoomed = false;
+
+  // Collect only real images (not placeholders)
+  function getLbItems() {
+    return items.filter(it => it.querySelector('img'));
+  }
+
+  function openLightbox(idx) {
+    const real = getLbItems();
+    if (!real.length) return;
+    lbIndex = Math.max(0, Math.min(idx, real.length - 1));
+    showLbItem();
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function showLbItem() {
+    const real = getLbItems();
+    const it   = real[lbIndex];
+    lbImg.src  = it.querySelector('img').src;
+    lbCaption.textContent = it.dataset.caption || '';
+    lbCounter.textContent = `${lbIndex + 1} / ${real.length}`;
+    resetZoom();
+    // Arrow visibility
+    document.getElementById('lb-prev').style.opacity = lbIndex === 0 ? '.3' : '1';
+    document.getElementById('lb-next').style.opacity = lbIndex === real.length - 1 ? '.3' : '1';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+    resetZoom();
+  }
+
+  function resetZoom() {
+    isZoomed = false;
+    lbImgWrap.classList.remove('zoomed');
+    lbZoomBtn.querySelector('svg').innerHTML = '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>';
+  }
+
+  function toggleZoom() {
+    isZoomed = !isZoomed;
+    lbImgWrap.classList.toggle('zoomed', isZoomed);
+    lbZoomBtn.querySelector('svg').innerHTML = isZoomed
+      ? '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M8 11h6"/>'
+      : '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>';
+  }
+
+  // Click items to open
+  items.forEach((it, i) => {
+    it.addEventListener('click', () => {
+      const realIdx = getLbItems().indexOf(it);
+      if (realIdx >= 0) openLightbox(realIdx);
     });
   });
- 
-  // ── Lightbox ──
-  const lightbox = document.getElementById('lightbox');
-  const lbImg    = document.getElementById('lightbox-img');
-  document.getElementById('lightbox-close').onclick = () => lightbox.classList.remove('active');
-  lightbox.addEventListener('click', e => { if(e.target===lightbox) lightbox.classList.remove('active'); });
-  function openLightbox(src){ lbImg.src = src; lightbox.classList.add('active'); }
+
+  // Controls
+  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+  lbZoomBtn.addEventListener('click', toggleZoom);
+  lbImgWrap.addEventListener('click', toggleZoom);
+  document.getElementById('lb-prev').addEventListener('click', () => {
+    if (lbIndex > 0) { lbIndex--; showLbItem(); }
+  });
+  document.getElementById('lb-next').addEventListener('click', () => {
+    const real = getLbItems();
+    if (lbIndex < real.length - 1) { lbIndex++; showLbItem(); }
+  });
+
+  // Click outside image to close
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Keyboard: arrows + Escape
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape')      closeLightbox();
+    if (e.key === 'ArrowLeft')   { if (lbIndex > 0) { lbIndex--; showLbItem(); } }
+    if (e.key === 'ArrowRight')  { const r = getLbItems(); if (lbIndex < r.length-1) { lbIndex++; showLbItem(); } }
+  });
+
+  // Touch swipe in lightbox
+  let touchStartX = 0;
+  lightbox.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  lightbox.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) < 40) return;
+    const real = getLbItems();
+    if (diff > 0 && lbIndex < real.length - 1) { lbIndex++; showLbItem(); }
+    if (diff < 0 && lbIndex > 0) { lbIndex--; showLbItem(); }
+  });
+
+  // Block right-click & drag
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.querySelectorAll('img').forEach(img => img.addEventListener('dragstart', e => e.preventDefault()));
+</script>
+</body>
+</html>

@@ -278,143 +278,236 @@
       padding: .25rem .7rem; font-size: .78rem; font-weight: 500;
     }
 
-    /* ── GALLERY SLIDER ── */
+    /* ══════════════════════════════════════
+       GALLERY — FILTER TABS + MASONRY GRID
+    ══════════════════════════════════════ */
     #gallery { background: var(--surface); }
-    .gallery-slider-wrap {
-      position: relative;
+
+    /* Filter tabs */
+    .gallery-filters {
+      display: flex; gap: .5rem; flex-wrap: wrap;
+      margin-bottom: 2rem;
     }
-    .gallery-slider {
-      display: flex; gap: 1rem;
-      overflow-x: auto; scroll-snap-type: x mandatory;
-      scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
-      padding-bottom: .5rem; cursor: grab;
+    .filter-btn {
+      display: flex; align-items: center; gap: .4rem;
+      padding: .45rem 1.1rem; border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent; color: var(--muted);
+      font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 500;
+      cursor: pointer; transition: all .2s;
     }
-    .gallery-slider:active { cursor: grabbing; }
-    .gallery-slider::-webkit-scrollbar { height: 4px; }
-    .gallery-slider::-webkit-scrollbar-track { background: var(--border); border-radius: 4px; }
-    .gallery-slider::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 4px; }
+    .filter-btn:hover { border-color: var(--accent2); color: var(--text); }
+    .filter-btn.active {
+      background: var(--accent); border-color: var(--accent);
+      color: #000; font-weight: 700;
+    }
+    .filter-btn .filter-count {
+      background: rgba(0,0,0,.15); border-radius: 999px;
+      font-size: .7rem; padding: .05rem .45rem; font-weight: 700;
+    }
+    .filter-btn.active .filter-count { background: rgba(0,0,0,.2); }
+
+    /* Gallery grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
     .gallery-item {
-      flex: 0 0 300px; height: 220px;
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden;
-      scroll-snap-align: start;
+      border-radius: 14px; overflow: hidden;
       position: relative; cursor: pointer;
       transition: border-color .25s, transform .25s, box-shadow .25s;
+      aspect-ratio: 4/3;
     }
+    .gallery-item.hidden { display: none; }
     .gallery-item:hover {
       border-color: var(--accent);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0,212,255,.12);
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(0,212,255,.13);
     }
-    .gallery-item img { width:100%; height:100%; object-fit:cover; display:block; transition: transform .4s; }
-    .gallery-item:hover img { transform: scale(1.05); }
-    .gallery-item-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 55%);
+    .gallery-item img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .45s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.07); }
+
+    /* Category badge on each card */
+    .gallery-cat-badge {
+      position: absolute; top: .7rem; left: .7rem; z-index: 2;
+      font-size: .68rem; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: .22rem .65rem; border-radius: 999px;
+      backdrop-filter: blur(8px);
+    }
+    .gallery-cat-badge.networking { background: rgba(0,212,255,.18); color: #00d4ff; border: 1px solid rgba(0,212,255,.3); }
+    .gallery-cat-badge.cctv       { background: rgba(251,191,36,.18); color: #fbbf24;  border: 1px solid rgba(251,191,36,.3); }
+    .gallery-cat-badge.programming{ background: rgba(167,139,250,.18); color: #a78bfa; border: 1px solid rgba(167,139,250,.3); }
+
+    /* Hover overlay — two buttons */
+    .gallery-overlay {
+      position: absolute; inset: 0; z-index: 3;
+      background: linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.15) 60%, transparent 100%);
       opacity: 0; transition: opacity .25s;
-      display: flex; align-items: flex-end; padding: 1rem;
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 1rem;
+      gap: .55rem;
     }
-    .gallery-item:hover .gallery-item-overlay { opacity: 1; }
-    .gallery-item-overlay span {
-      color: #fff; font-size: .82rem; font-weight: 500;
-      display: flex; align-items: center; gap: .4rem;
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-overlay-title {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: .9rem; color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .gallery-item-overlay svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2; }
+    .gallery-overlay-btns {
+      display: flex; gap: .5rem;
+    }
+    .gov-btn {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: .35rem;
+      padding: .42rem .5rem; border-radius: 7px;
+      font-size: .76rem; font-weight: 600;
+      cursor: pointer; border: none; font-family: 'DM Sans', sans-serif;
+      transition: transform .15s, filter .15s;
+    }
+    .gov-btn:hover { transform: translateY(-1px); filter: brightness(1.15); }
+    .gov-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.2; flex-shrink: 0; }
+    .gov-btn.zoom   { background: rgba(255,255,255,.15); color: #fff; backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,.2); }
+    .gov-btn.detail { background: var(--accent); color: #000; }
+
+    /* Placeholder cards */
     .gallery-placeholder {
-      width:100%; height:100%;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      color: var(--muted); gap:.5rem; font-size:.82rem;
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--muted); gap: .5rem; font-size: .82rem;
     }
     .gallery-placeholder svg { width: 28px; height: 28px; stroke: var(--muted); stroke-width: 1.5; fill: none; }
-    /* Slider nav buttons */
-    .slider-btn {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      width: 42px; height: 42px; border-radius: 50%;
-      background: rgba(11,13,16,.85); backdrop-filter: blur(8px);
-      border: 1px solid var(--border); color: var(--text);
-      cursor: pointer; z-index: 10;
-      display: flex; align-items: center; justify-content: center;
-      transition: border-color .2s, background .2s, transform .2s;
-    }
-    .slider-btn:hover { border-color: var(--accent); background: rgba(0,212,255,.12); transform: translateY(-50%) scale(1.08); }
-    .slider-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.2; }
-    .slider-btn.prev { left: -20px; }
-    .slider-btn.next { right: -20px; }
-    /* Slider dots */
-    .slider-dots {
-      display: flex; justify-content: center; gap: .5rem; margin-top: 1.2rem;
-    }
-    .slider-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--border); border: none; cursor: pointer;
-      transition: background .2s, transform .2s; padding: 0;
-    }
-    .slider-dot.active { background: var(--accent); transform: scale(1.4); }
 
-    /* ── LIGHTBOX ── */
+    /* ══════════════════════════════════════
+       LIGHTBOX — full zoom + detail panel
+    ══════════════════════════════════════ */
     #lightbox {
-      display: none; position: fixed; inset: 0; z-index: 300;
-      background: rgba(0,0,0,.96);
+      display: none; position: fixed; inset: 0; z-index: 400;
+      background: rgba(0,0,0,.97);
       align-items: center; justify-content: center;
-      flex-direction: column;
     }
     #lightbox.active { display: flex; }
-    #lightbox-img-wrap {
-      position: relative; max-width: 92vw; max-height: 82vh;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden; border-radius: 10px;
-      cursor: zoom-in;
+
+    /* Toolbar top */
+    #lb-toolbar {
+      position: absolute; top: 1rem; right: 1rem; z-index: 10;
+      display: flex; gap: .5rem;
     }
-    #lightbox-img-wrap.zoomed { cursor: zoom-out; overflow: visible; }
-    #lightbox-img {
-      max-width: 92vw; max-height: 82vh;
-      border-radius: 10px; display: block;
-      transition: transform .3s ease;
-      transform-origin: center center;
-      user-select: none; -webkit-user-drag: none;
-    }
-    #lightbox-img-wrap.zoomed #lightbox-img { transform: scale(2); }
-    /* Lightbox toolbar */
-    #lightbox-toolbar {
-      position: absolute; top: 1.2rem; right: 1.2rem;
-      display: flex; gap: .6rem;
-    }
-    .lb-btn {
-      width: 40px; height: 40px; border-radius: 8px;
-      background: rgba(255,255,255,.1); backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,.15);
+    .lb-tbtn {
+      width: 38px; height: 38px; border-radius: 8px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
       color: #fff; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      transition: background .2s;
+      transition: background .18s, border-color .18s;
     }
-    .lb-btn:hover { background: rgba(0,212,255,.25); border-color: var(--accent); }
-    .lb-btn svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2; }
-    /* Lightbox nav arrows */
+    .lb-tbtn:hover { background: rgba(0,212,255,.22); border-color: var(--accent); }
+    .lb-tbtn svg { width: 17px; height: 17px; stroke: #fff; fill: none; stroke-width: 2; }
+
+    /* Main area — image + optional detail panel */
+    #lb-main {
+      display: flex; align-items: stretch;
+      max-width: min(1100px, 96vw); width: 100%;
+      max-height: 88vh; gap: 0;
+      border-radius: 14px; overflow: hidden;
+    }
+
+    /* Image side */
+    #lb-img-side {
+      flex: 1; min-width: 0; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      background: #000;
+      cursor: zoom-in; overflow: hidden;
+    }
+    #lb-img-side.zoomed { cursor: zoom-out; }
+    #lb-img {
+      max-width: 100%; max-height: 88vh;
+      display: block; object-fit: contain;
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+      transform-origin: center;
+      user-select: none; pointer-events: none;
+    }
+    #lb-img-side.zoomed #lb-img { transform: scale(2.2); }
+
+    /* Nav arrows */
     .lb-arrow {
       position: absolute; top: 50%; transform: translateY(-50%);
-      width: 48px; height: 48px; border-radius: 50%;
-      background: rgba(255,255,255,.08); backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,.15);
-      color: #fff; cursor: pointer;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(0,0,0,.55); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.14);
+      color: #fff; cursor: pointer; z-index: 5;
       display: flex; align-items: center; justify-content: center;
-      transition: background .2s, transform .2s;
-      z-index: 10;
+      transition: background .18s, transform .18s;
     }
-    .lb-arrow:hover { background: rgba(0,212,255,.25); transform: translateY(-50%) scale(1.1); }
-    .lb-arrow svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 2.2; }
-    #lb-prev { left: 1.5rem; }
-    #lb-next { right: 1.5rem; }
-    /* Lightbox counter */
+    .lb-arrow:hover { background: rgba(0,212,255,.3); transform: translateY(-50%) scale(1.1); }
+    .lb-arrow svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 2.2; }
+    #lb-prev { left: .7rem; }
+    #lb-next { right: .7rem; }
+
+    /* Detail panel (slide in from right) */
+    #lb-detail {
+      width: 0; overflow: hidden;
+      background: var(--card); border-left: 1px solid var(--border);
+      transition: width .3s ease;
+      display: flex; flex-direction: column;
+      flex-shrink: 0;
+    }
+    #lb-detail.open { width: 280px; }
+    #lb-detail-inner {
+      width: 280px; padding: 1.6rem 1.4rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      overflow-y: auto; height: 100%;
+    }
+    .lb-detail-thumb {
+      width: 100%; aspect-ratio: 16/9; border-radius: 8px;
+      overflow: hidden; border: 1px solid var(--border);
+    }
+    .lb-detail-thumb img { width:100%; height:100%; object-fit:cover; }
+    .lb-detail-cat {
+      font-size: .68rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; padding: .2rem .65rem;
+      border-radius: 999px; display: inline-block; width: fit-content;
+    }
+    .lb-detail-cat.networking { background: rgba(0,212,255,.12); color: #00d4ff; }
+    .lb-detail-cat.cctv       { background: rgba(251,191,36,.12); color: #fbbf24; }
+    .lb-detail-cat.programming{ background: rgba(167,139,250,.12); color: #a78bfa; }
+    .lb-detail-title {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 1.05rem; color: var(--text); line-height: 1.3;
+    }
+    .lb-detail-desc {
+      font-size: .85rem; color: var(--muted); line-height: 1.65;
+    }
+    .lb-detail-meta { display: flex; flex-direction: column; gap: .4rem; }
+    .lb-meta-row {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .8rem; color: var(--muted);
+    }
+    .lb-meta-row svg { width: 13px; height: 13px; stroke: var(--accent); fill: none; stroke-width: 2; flex-shrink: 0; }
+    .lb-meta-row strong { color: var(--text); font-weight: 600; }
+    .lb-detail-divider { border: none; border-top: 1px solid var(--border); margin: .2rem 0; }
+    .lb-detail-wa {
+      display: flex; align-items: center; justify-content: center; gap: .5rem;
+      padding: .65rem; border-radius: 8px;
+      background: #25d366; color: #000;
+      font-weight: 700; font-size: .82rem; text-decoration: none;
+      font-family: 'Syne', sans-serif; margin-top: auto;
+      transition: filter .2s;
+    }
+    .lb-detail-wa:hover { filter: brightness(1.1); }
+    .lb-detail-wa svg { width: 16px; height: 16px; fill: #000; stroke: none; flex-shrink: 0; }
+
+    /* Bottom counter */
     #lb-counter {
-      margin-top: .9rem;
-      font-size: .82rem; color: rgba(255,255,255,.5);
-      font-family: 'DM Sans', sans-serif; letter-spacing: .06em;
-    }
-    /* Lightbox caption */
-    #lb-caption {
-      margin-top: .4rem;
-      font-size: .9rem; color: rgba(255,255,255,.8);
-      font-family: 'Syne', sans-serif; font-weight: 600;
+      position: absolute; bottom: 1rem; left: 50%;
+      transform: translateX(-50%);
+      font-size: .78rem; color: rgba(255,255,255,.4);
+      font-family: 'DM Sans', sans-serif; letter-spacing: .08em;
+      background: rgba(0,0,0,.4); padding: .25rem .8rem; border-radius: 999px;
+      pointer-events: none;
     }
 
     /* ── CONTACT ── */
@@ -658,103 +751,279 @@
 <section id="gallery">
   <div class="section-label">Hasil Kerja Saya</div>
   <h2>Portofolio</h2>
-  <p class="section-desc">Dokumentasi proyek nyata yang telah saya kerjakan. Klik foto untuk memperbesar.</p>
+  <p class="section-desc">Dokumentasi proyek nyata. Klik foto untuk memperbesar atau lihat detail.</p>
 
-  <div class="gallery-slider-wrap">
-    <!-- Tombol Prev -->
-    <button class="slider-btn prev" id="slider-prev" aria-label="Sebelumnya">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  <!-- Filter Tabs -->
+  <div class="gallery-filters">
+    <button class="filter-btn active" data-filter="all">
+      Semua <span class="filter-count" id="count-all">12</span>
     </button>
+    <button class="filter-btn" data-filter="networking">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Networking <span class="filter-count" id="count-networking">0</span>
+    </button>
+    <button class="filter-btn" data-filter="cctv">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+      CCTV <span class="filter-count" id="count-cctv">0</span>
+    </button>
+    <button class="filter-btn" data-filter="programming">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      Programming <span class="filter-count" id="count-programming">0</span>
+    </button>
+  </div>
 
-    <div class="gallery-slider" id="gallery-slider">
-      <!-- ══ GANTI placeholder berikut dengan foto Anda ══
-           Contoh: <div class="gallery-item" data-caption="Instalasi CCTV Toko ABC">
-                     <img src="foto1.jpg" alt="...">
-                     <div class="gallery-item-overlay">...</div>
-                   </div>
-      -->
-      <div class="gallery-item" data-caption="Nama Proyek Anda">
-  <img src="pekerjaan1.jpeg" alt="Deskripsi">
-  <div class="gallery-item-overlay">
-    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Perbesar</span>
-  </div>
-</div>
-      <div class="gallery-item" data-caption="Nama Proyek Anda">
-  <img src="pekerjaan2.jpeg" alt="Deskripsi">
-  <div class="gallery-item-overlay">
-    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Perbesar</span>
-  </div>
-</div>
-          <div class="gallery-item" data-caption="Nama Proyek Anda">
-  <img src="pekerjaan3.jpeg" alt="Deskripsi">
-  <div class="gallery-item-overlay">
-    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Perbesar</span>
-  </div>
-</div>
-        <div class="gallery-item" data-caption="Nama Proyek Anda">
-  <img src="pekerjaan4.jpeg" alt="Deskripsi">
-  <div class="gallery-item-overlay">
-    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Perbesar</span>
-  </div>
-</div>
-          <div class="gallery-item" data-caption="Nama Proyek Anda">
-  <img src="pekerjaan5.jpeg" alt="Deskripsi">
-  <div class="gallery-item-overlay">
-    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Perbesar</span>
-  </div>
-</div>
-          <div class="gallery-item" data-caption="Nama Proyek Anda">
-  <img src="pekerjaan6.jpeg" alt="Deskripsi">
-  <div class="gallery-item-overlay">
-    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Perbesar</span>
-  </div>
-</div>
-          <div class="gallery-item" data-caption="Nama Proyek Anda">
-  <img src="pekerjaan7.jpeg" alt="Deskripsi">
-  <div class="gallery-item-overlay">
-    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Perbesar</span>
-  </div>
-</div>
-          <div class="gallery-item" data-caption="Nama Proyek Anda">
-  <img src="pekerjaan8.jpeg" alt="Deskripsi">
-  <div class="gallery-item-overlay">
-    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Perbesar</span>
-  </div>
-</div>
-          <div class="gallery-item" data-caption="Nama Proyek Anda">
-  <img src="pekerjaan9.jpeg" alt="Deskripsi">
-  <div class="gallery-item-overlay">
-    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Perbesar</span>
-  </div>
-</div>
-          <div class="gallery-item" data-caption="Nama Proyek Anda">
-  <img src="pekerjaan10.jpeg" alt="Deskripsi">
-  <div class="gallery-item-overlay">
-    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Perbesar</span>
-  </div>
-</div>
-          <div class="gallery-item" data-caption="Nama Proyek Anda">
-  <img src="pekerjaan11.jpeg" alt="Deskripsi">
-  <div class="gallery-item-overlay">
-    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Perbesar</span>
-  </div>
-</div>
-          <div class="gallery-item" data-caption="Nama Proyek Anda">
-  <img src="pekerjaan12.jpeg" alt="Deskripsi">
-  <div class="gallery-item-overlay">
-    <span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Perbesar</span>
-  </div>
-</div>
+  <!-- Grid -->
+  <div class="gallery-grid" id="gallery-grid">
+
+    <!-- ══ DATA FOTO ══
+         Untuk setiap foto, isi:
+           data-category = "networking" | "cctv" | "programming"
+           data-title    = Nama proyek
+           data-desc     = Deskripsi singkat proyek
+           data-client   = Nama klien / lokasi
+           data-year     = Tahun proyek
+    -->
+    <div class="gallery-item"
+         data-category="cctv"
+         data-title="Instalasi CCTV Toko"
+         data-desc="Pemasangan 4 unit IP Camera indoor/outdoor lengkap dengan konfigurasi akses remote."
+         data-client="Klien Manado" data-year="2025">
+      <img src="pekerjaan1.jpeg" alt="Instalasi CCTV">
+      <span class="gallery-cat-badge cctv">CCTV</span>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Instalasi CCTV Toko</div>
+        <div class="gallery-overlay-btns">
+          <button class="gov-btn zoom" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),false)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom
+          </button>
+          <button class="gov-btn detail" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),true)">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Lihat Detail
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Tombol Next -->
-    <button class="slider-btn next" id="slider-next" aria-label="Berikutnya">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-    </button>
-  </div>
+    <div class="gallery-item"
+         data-category="networking"
+         data-title="Setup Jaringan Kantor"
+         data-desc="Instalasi kabel UTP Cat6, konfigurasi switch managed, dan access point Ubiquiti."
+         data-client="Klien Manado" data-year="2025">
+      <img src="pekerjaan2.jpeg" alt="Jaringan Kantor">
+      <span class="gallery-cat-badge networking">Networking</span>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Setup Jaringan Kantor</div>
+        <div class="gallery-overlay-btns">
+          <button class="gov-btn zoom" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),false)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom
+          </button>
+          <button class="gov-btn detail" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),true)">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Lihat Detail
+          </button>
+        </div>
+      </div>
+    </div>
 
-  <!-- Dots navigasi -->
-  <div class="slider-dots" id="slider-dots"></div>
+    <div class="gallery-item"
+         data-category="cctv"
+         data-title="NVR & DVR Configuration"
+         data-desc="Konfigurasi NVR 16 channel dengan remote monitoring via aplikasi iCSee."
+         data-client="Klien Manado" data-year="2025">
+      <img src="pekerjaan3.jpeg" alt="NVR DVR">
+      <span class="gallery-cat-badge cctv">CCTV</span>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">NVR & DVR Configuration</div>
+        <div class="gallery-overlay-btns">
+          <button class="gov-btn zoom" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),false)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom
+          </button>
+          <button class="gov-btn detail" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),true)">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Lihat Detail
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-item"
+         data-category="networking"
+         data-title="Point-to-Point Wireless"
+         data-desc="Instalasi link PtP menggunakan Ubiquiti AirGrid jarak 1.2 km."
+         data-client="Klien Manado" data-year="2024">
+      <img src="pekerjaan4.jpeg" alt="Wireless PtP">
+      <span class="gallery-cat-badge networking">Networking</span>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Point-to-Point Wireless</div>
+        <div class="gallery-overlay-btns">
+          <button class="gov-btn zoom" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),false)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom
+          </button>
+          <button class="gov-btn detail" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),true)">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Lihat Detail
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-item"
+         data-category="cctv"
+         data-title="CCTV Residensial"
+         data-desc="Pemasangan 6 kamera outdoor IP66 untuk hunian pribadi dengan night vision."
+         data-client="Klien Manado" data-year="2024">
+      <img src="pekerjaan5.jpeg" alt="CCTV Residensial">
+      <span class="gallery-cat-badge cctv">CCTV</span>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">CCTV Residensial</div>
+        <div class="gallery-overlay-btns">
+          <button class="gov-btn zoom" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),false)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom
+          </button>
+          <button class="gov-btn detail" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),true)">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Lihat Detail
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-item"
+         data-category="networking"
+         data-title="MikroTik VLAN Setup"
+         data-desc="Konfigurasi VLAN dan bandwidth management menggunakan RouterOS MikroTik."
+         data-client="Klien Manado" data-year="2025">
+      <img src="pekerjaan6.jpeg" alt="MikroTik">
+      <span class="gallery-cat-badge networking">Networking</span>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">MikroTik VLAN Setup</div>
+        <div class="gallery-overlay-btns">
+          <button class="gov-btn zoom" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),false)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom
+          </button>
+          <button class="gov-btn detail" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),true)">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Lihat Detail
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-item"
+         data-category="programming"
+         data-title="Aplikasi Monitoring Jaringan"
+         data-desc="Dashboard monitoring status perangkat jaringan berbasis web menggunakan Python Flask."
+         data-client="Proyek Akademik" data-year="2024">
+      <img src="pekerjaan7.jpeg" alt="Aplikasi Monitoring">
+      <span class="gallery-cat-badge programming">Programming</span>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Aplikasi Monitoring Jaringan</div>
+        <div class="gallery-overlay-btns">
+          <button class="gov-btn zoom" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),false)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom
+          </button>
+          <button class="gov-btn detail" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),true)">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Lihat Detail
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-item"
+         data-category="cctv"
+         data-title="Instalasi CCTV Gudang"
+         data-desc="8 kamera IP PTZ untuk area gudang dengan recording 24 jam ke NAS lokal."
+         data-client="Klien Manado" data-year="2025">
+      <img src="pekerjaan8.jpeg" alt="CCTV Gudang">
+      <span class="gallery-cat-badge cctv">CCTV</span>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Instalasi CCTV Gudang</div>
+        <div class="gallery-overlay-btns">
+          <button class="gov-btn zoom" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),false)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom
+          </button>
+          <button class="gov-btn detail" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),true)">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Lihat Detail
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-item"
+         data-category="networking"
+         data-title="Structured Cabling"
+         data-desc="Instalasi kabel terstruktur Cat6 untuk 50+ port pada gedung perkantoran."
+         data-client="Klien Manado" data-year="2025">
+      <img src="pekerjaan9.jpeg" alt="Structured Cabling">
+      <span class="gallery-cat-badge networking">Networking</span>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Structured Cabling</div>
+        <div class="gallery-overlay-btns">
+          <button class="gov-btn zoom" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),false)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom
+          </button>
+          <button class="gov-btn detail" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),true)">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Lihat Detail
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-item"
+         data-category="programming"
+         data-title="Script Automasi Backup"
+         data-desc="Script Python untuk backup konfigurasi MikroTik secara otomatis ke cloud storage."
+         data-client="Proyek Mandiri" data-year="2024">
+      <img src="pekerjaan10.jpeg" alt="Script Automasi">
+      <span class="gallery-cat-badge programming">Programming</span>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Script Automasi Backup</div>
+        <div class="gallery-overlay-btns">
+          <button class="gov-btn zoom" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),false)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom
+          </button>
+          <button class="gov-btn detail" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),true)">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Lihat Detail
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-item"
+         data-category="cctv"
+         data-title="Remote CCTV Monitoring"
+         data-desc="Setup akses CCTV jarak jauh via VPN untuk pemantauan dari luar kota."
+         data-client="Klien Manado" data-year="2025">
+      <img src="pekerjaan11.jpeg" alt="Remote Monitoring">
+      <span class="gallery-cat-badge cctv">CCTV</span>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Remote CCTV Monitoring</div>
+        <div class="gallery-overlay-btns">
+          <button class="gov-btn zoom" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),false)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom
+          </button>
+          <button class="gov-btn detail" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),true)">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Lihat Detail
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-item"
+         data-category="networking"
+         data-title="Instalasi Fiber Optik"
+         data-desc="Splicing dan terminasi kabel fiber optik single-mode untuk koneksi antar gedung."
+         data-client="Klien Manado" data-year="2024">
+      <img src="pekerjaan12.jpeg" alt="Fiber Optik">
+      <span class="gallery-cat-badge networking">Networking</span>
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">Instalasi Fiber Optik</div>
+        <div class="gallery-overlay-btns">
+          <button class="gov-btn zoom" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),false)">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Zoom
+          </button>
+          <button class="gov-btn detail" onclick="event.stopPropagation();openLb(this.closest('.gallery-item'),true)">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Lihat Detail
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
 
 <!-- EXPERIENCE -->
@@ -857,10 +1126,10 @@
       <span class="c-label">WhatsApp</span>
       <span class="c-val">+62 895-0421-1494</span>
     </a>
-    <a class="contact-card" href="mailto:pendongnatan2@gmail.com">
+    <a class="contact-card" href="/cdn-cgi/l/email-protection#7404111a101b1a131a1500151a46341319151d185a171b19">
       <span class="c-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
       <span class="c-label">Email</span>
-      <span class="c-val">pendongnatan2@gmail.com</span>
+      <span class="c-val"><span class="__cf_email__" data-cfemail="f484919a909b9a939a9580959ac6b49399959d98da979b99">[email&#160;protected]</span></span>
     </a>
     <a class="contact-card" href="https://instagram.com/n.yupiii_" target="_blank">
       <span class="c-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></span>
@@ -883,29 +1152,60 @@
 
 <!-- LIGHTBOX -->
 <div id="lightbox">
-  <!-- Toolbar kanan atas -->
-  <div id="lightbox-toolbar">
-    <button class="lb-btn" id="lb-zoom" title="Zoom">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/></svg>
+  <!-- Toolbar top-right -->
+  <div id="lb-toolbar">
+    <button class="lb-tbtn" id="lb-zoom-btn" title="Zoom">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/></svg>
     </button>
-    <button class="lb-btn" id="lightbox-close" title="Tutup">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    <button class="lb-tbtn" id="lb-detail-btn" title="Lihat Detail">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </button>
+    <button class="lb-tbtn" id="lb-close" title="Tutup">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
-  <!-- Tombol navigasi kiri/kanan -->
-  <button class="lb-arrow" id="lb-prev">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-  </button>
-  <!-- Foto -->
-  <div id="lightbox-img-wrap">
-    <img id="lightbox-img" src="" alt="">
+
+  <!-- Main content -->
+  <div id="lb-main">
+    <!-- Image side -->
+    <div id="lb-img-side">
+      <button class="lb-arrow" id="lb-prev">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <img id="lb-img" src="" alt="">
+      <button class="lb-arrow" id="lb-next">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <!-- Detail panel -->
+    <div id="lb-detail">
+      <div id="lb-detail-inner">
+        <div class="lb-detail-thumb"><img id="lb-thumb" src="" alt=""></div>
+        <span id="lb-det-cat" class="lb-detail-cat"></span>
+        <div id="lb-det-title" class="lb-detail-title"></div>
+        <div id="lb-det-desc" class="lb-detail-desc"></div>
+        <hr class="lb-detail-divider">
+        <div class="lb-detail-meta">
+          <div class="lb-meta-row">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Klien: <strong id="lb-det-client"></strong></span>
+          </div>
+          <div class="lb-meta-row">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Tahun: <strong id="lb-det-year"></strong></span>
+          </div>
+        </div>
+        <hr class="lb-detail-divider">
+        <a class="lb-detail-wa" href="https://wa.me/6289504211494?text=Halo%20Nataniel%2C%20saya%20tertarik%20dengan%20layanan%20Anda" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.529 5.845L.057 23.428a.75.75 0 0 0 .916.914l5.453-1.453A11.943 11.943 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.907 0-3.686-.53-5.204-1.446l-.374-.224-3.88 1.035 1.012-3.75-.242-.386A9.958 9.958 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Konsultasi Proyek Ini
+        </a>
+      </div>
+    </div>
   </div>
-  <button class="lb-arrow" id="lb-next">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-  </button>
-  <!-- Counter & caption -->
+
+  <!-- Counter -->
   <div id="lb-counter"></div>
-  <div id="lb-caption"></div>
 </div>
 
 <!-- FLOATING KONSULTASI BUTTON -->
@@ -916,151 +1216,152 @@
 
 <script>
   // ══════════════════════════════════════════
-  //  GALLERY SLIDER
+  //  GALLERY FILTER
   // ══════════════════════════════════════════
-  const slider     = document.getElementById('gallery-slider');
-  const btnPrev    = document.getElementById('slider-prev');
-  const btnNext    = document.getElementById('slider-next');
-  const dotsWrap   = document.getElementById('slider-dots');
-  const items      = Array.from(slider.querySelectorAll('.gallery-item'));
-  const ITEM_W     = () => items[0].offsetWidth + 16; // width + gap
+  const allItems    = Array.from(document.querySelectorAll('#gallery-grid .gallery-item'));
+  const filterBtns  = document.querySelectorAll('.filter-btn');
+  const cats        = ['networking','cctv','programming'];
 
-  // Build dots
-  items.forEach((_, i) => {
-    const d = document.createElement('button');
-    d.className = 'slider-dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', () => scrollTo(i));
-    dotsWrap.appendChild(d);
+  // Count per category and update badges
+  cats.forEach(cat => {
+    const n = allItems.filter(it => it.dataset.category === cat).length;
+    const el = document.getElementById('count-' + cat);
+    if (el) el.textContent = n;
   });
-  const dots = Array.from(dotsWrap.querySelectorAll('.slider-dot'));
+  document.getElementById('count-all').textContent = allItems.length;
 
-  function scrollTo(idx) {
-    slider.scrollTo({ left: idx * ITEM_W(), behavior: 'smooth' });
-  }
-  function updateDots() {
-    const idx = Math.round(slider.scrollLeft / ITEM_W());
-    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-  }
-
-  btnPrev.addEventListener('click', () => {
-    slider.scrollBy({ left: -ITEM_W() * 2, behavior: 'smooth' });
-  });
-  btnNext.addEventListener('click', () => {
-    slider.scrollBy({ left: ITEM_W() * 2, behavior: 'smooth' });
-  });
-  slider.addEventListener('scroll', updateDots);
-
-  // Drag to scroll (desktop)
-  let isDragging = false, startX, startScroll;
-  slider.addEventListener('mousedown', e => {
-    isDragging = true; startX = e.pageX; startScroll = slider.scrollLeft;
-    slider.style.userSelect = 'none';
-  });
-  document.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    slider.scrollLeft = startScroll - (e.pageX - startX);
-  });
-  document.addEventListener('mouseup', () => {
-    isDragging = false; slider.style.userSelect = '';
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      allItems.forEach(it => {
+        it.classList.toggle('hidden', f !== 'all' && it.dataset.category !== f);
+      });
+    });
   });
 
   // ══════════════════════════════════════════
-  //  LIGHTBOX  (zoom + prev/next + keyboard + swipe)
+  //  LIGHTBOX
   // ══════════════════════════════════════════
-  const lightbox   = document.getElementById('lightbox');
-  const lbImg      = document.getElementById('lightbox-img');
-  const lbImgWrap  = document.getElementById('lightbox-img-wrap');
+  const lb         = document.getElementById('lightbox');
+  const lbImg      = document.getElementById('lb-img');
+  const lbThumb    = document.getElementById('lb-thumb');
+  const lbImgSide  = document.getElementById('lb-img-side');
+  const lbDetail   = document.getElementById('lb-detail');
   const lbCounter  = document.getElementById('lb-counter');
-  const lbCaption  = document.getElementById('lb-caption');
-  const lbZoomBtn  = document.getElementById('lb-zoom');
-  let lbIndex = 0;
-  let isZoomed = false;
+  let lbIndex      = 0;
+  let lbItems      = [];
+  let isZoomed     = false;
+  let detailOpen   = false;
 
-  // Collect only real images (not placeholders)
-  function getLbItems() {
-    return items.filter(it => it.querySelector('img'));
-  }
-
-  function openLightbox(idx) {
-    const real = getLbItems();
-    if (!real.length) return;
-    lbIndex = Math.max(0, Math.min(idx, real.length - 1));
-    showLbItem();
-    lightbox.classList.add('active');
+  // openLb(element, showDetail)
+  function openLb(el, showDetail) {
+    lbItems = allItems.filter(it => it.querySelector('img') && !it.classList.contains('hidden'));
+    lbIndex = lbItems.indexOf(el);
+    if (lbIndex < 0) lbIndex = 0;
+    renderLb();
+    if (showDetail) openDetail(); else closeDetail();
+    lb.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
 
-  function showLbItem() {
-    const real = getLbItems();
-    const it   = real[lbIndex];
-    lbImg.src  = it.querySelector('img').src;
-    lbCaption.textContent = it.dataset.caption || '';
-    lbCounter.textContent = `${lbIndex + 1} / ${real.length}`;
+  function renderLb() {
+    const it  = lbItems[lbIndex];
+    const img = it.querySelector('img');
+    lbImg.src   = img.src;
+    lbThumb.src = img.src;
     resetZoom();
-    // Arrow visibility
+    // Detail panel data
+    document.getElementById('lb-det-title').textContent  = it.dataset.title  || '';
+    document.getElementById('lb-det-desc').textContent   = it.dataset.desc   || '';
+    document.getElementById('lb-det-client').textContent = it.dataset.client || '';
+    document.getElementById('lb-det-year').textContent   = it.dataset.year   || '';
+    const cat  = it.dataset.category || '';
+    const catEl = document.getElementById('lb-det-cat');
+    catEl.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+    catEl.className = 'lb-detail-cat ' + cat;
+    // Counter
+    lbCounter.textContent = `${lbIndex + 1} / ${lbItems.length}`;
+    // Arrow opacity
     document.getElementById('lb-prev').style.opacity = lbIndex === 0 ? '.3' : '1';
-    document.getElementById('lb-next').style.opacity = lbIndex === real.length - 1 ? '.3' : '1';
+    document.getElementById('lb-next').style.opacity = lbIndex === lbItems.length - 1 ? '.3' : '1';
   }
 
-  function closeLightbox() {
-    lightbox.classList.remove('active');
+  function closeLb() {
+    lb.classList.remove('active');
     document.body.style.overflow = '';
-    resetZoom();
+    closeDetail(); resetZoom();
+  }
+
+  function openDetail() {
+    detailOpen = true;
+    lbDetail.classList.add('open');
+    document.getElementById('lb-detail-btn').style.background = 'rgba(0,212,255,.25)';
+    document.getElementById('lb-detail-btn').style.borderColor = 'var(--accent)';
+  }
+  function closeDetail() {
+    detailOpen = false;
+    lbDetail.classList.remove('open');
+    document.getElementById('lb-detail-btn').style.background = '';
+    document.getElementById('lb-detail-btn').style.borderColor = '';
   }
 
   function resetZoom() {
     isZoomed = false;
-    lbImgWrap.classList.remove('zoomed');
-    lbZoomBtn.querySelector('svg').innerHTML = '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>';
+    lbImgSide.classList.remove('zoomed');
+    const svg = document.querySelector('#lb-zoom-btn svg');
+    if (svg) svg.innerHTML = '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>';
   }
-
   function toggleZoom() {
     isZoomed = !isZoomed;
-    lbImgWrap.classList.toggle('zoomed', isZoomed);
-    lbZoomBtn.querySelector('svg').innerHTML = isZoomed
+    lbImgSide.classList.toggle('zoomed', isZoomed);
+    const svg = document.querySelector('#lb-zoom-btn svg');
+    if (svg) svg.innerHTML = isZoomed
       ? '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M8 11h6"/>'
       : '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>';
   }
 
-  // Click items to open
-  items.forEach((it, i) => {
-    it.addEventListener('click', () => {
-      const realIdx = getLbItems().indexOf(it);
-      if (realIdx >= 0) openLightbox(realIdx);
-    });
-  });
-
   // Controls
-  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
-  lbZoomBtn.addEventListener('click', toggleZoom);
-  lbImgWrap.addEventListener('click', toggleZoom);
-  document.getElementById('lb-prev').addEventListener('click', () => {
-    if (lbIndex > 0) { lbIndex--; showLbItem(); }
+  document.getElementById('lb-close').addEventListener('click', closeLb);
+  document.getElementById('lb-zoom-btn').addEventListener('click', toggleZoom);
+  lbImgSide.addEventListener('click', e => { if(e.target === lbImgSide || e.target === lbImg) toggleZoom(); });
+  document.getElementById('lb-detail-btn').addEventListener('click', () => { detailOpen ? closeDetail() : openDetail(); });
+
+  document.getElementById('lb-prev').addEventListener('click', e => {
+    e.stopPropagation();
+    if (lbIndex > 0) { lbIndex--; renderLb(); }
   });
-  document.getElementById('lb-next').addEventListener('click', () => {
-    const real = getLbItems();
-    if (lbIndex < real.length - 1) { lbIndex++; showLbItem(); }
+  document.getElementById('lb-next').addEventListener('click', e => {
+    e.stopPropagation();
+    if (lbIndex < lbItems.length - 1) { lbIndex++; renderLb(); }
   });
 
-  // Click outside image to close
-  lightbox.addEventListener('click', e => {
-    if (e.target === lightbox) closeLightbox();
-  });
+  // Click backdrop to close
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
 
-  // Keyboard: arrows + Escape
+  // Keyboard
   document.addEventListener('keydown', e => {
-    if (!lightbox.classList.contains('active')) return;
-    if (e.key === 'Escape')      closeLightbox();
-    if (e.key === 'ArrowLeft')   { if (lbIndex > 0) { lbIndex--; showLbItem(); } }
-    if (e.key === 'ArrowRight')  { const r = getLbItems(); if (lbIndex < r.length-1) { lbIndex++; showLbItem(); } }
+    if (!lb.classList.contains('active')) return;
+    if (e.key === 'Escape')     closeLb();
+    if (e.key === 'ArrowLeft')  { if (lbIndex > 0) { lbIndex--; renderLb(); } }
+    if (e.key === 'ArrowRight') { if (lbIndex < lbItems.length-1) { lbIndex++; renderLb(); } }
+    if (e.key === 'i')          { detailOpen ? closeDetail() : openDetail(); }
   });
 
-  // Touch swipe in lightbox
-  let touchStartX = 0;
-  lightbox.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-  lightbox.addEventListener('touchend', e => {
-    const diff = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) < 40) return;
-    const real = getLbItems();
-    if (diff > 0 && lbIndex < real.length - 1) { lbIndex++; showLbItem(); }
-    if (diff < 0 && lbIndex > 0) { lbIndex--; showLbItem(); }
+  // Touch swipe
+  let tx = 0;
+  lb.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', e => {
+    const d = tx - e.changedTouches[0].clientX;
+    if (Math.abs(d) < 40) return;
+    if (d > 0 && lbIndex < lbItems.length-1) { lbIndex++; renderLb(); }
+    if (d < 0 && lbIndex > 0) { lbIndex--; renderLb(); }
+  });
+
+  // Block right-click and drag
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.querySelectorAll('img').forEach(img => img.addEventListener('dragstart', e => e.preventDefault()));
+</script>
+</body>
+</html>
